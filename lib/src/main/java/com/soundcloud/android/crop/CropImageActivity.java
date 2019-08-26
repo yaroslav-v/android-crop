@@ -331,6 +331,9 @@ public class CropImageActivity extends MonitoredActivity {
         try {
             croppedImage = decodeRegionCrop(r, outWidth, outHeight);
 
+            // TODO: a couple more variants to handle the rotation issue on Samsung devices
+            // https://github.com/jdamcd/android-crop/issues/46
+            // https://github.com/jdamcd/android-crop/pull/251
             if (exifRotation != 0) {
                 Matrix m = new Matrix();
                 m.postRotate(exifRotation);

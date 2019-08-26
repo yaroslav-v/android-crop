@@ -1,6 +1,8 @@
-## Next
-* Fix max size crash when input cannot be decoded
-* Translations: German, Chinese (simplified & traditional)
+## 1.0.3
+
+* Fixed the rotation issue for Samsung devices
+* Extended the example
+* Minor improvements
 
 ## 1.0.1
 

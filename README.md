@@ -3,7 +3,7 @@
 An Android library project that provides a simple image cropping `Activity`, based on code from AOSP.
 
 [![](https://jitpack.io/v/yaroslav-v/android-crop.svg)](https://jitpack.io/#yaroslav-v/android-crop)
-[![changelog](https://img.shields.io/badge/changelog-1.0.1-lightgrey.svg)](CHANGELOG.md)
+[![changelog](https://img.shields.io/badge/changelog-1.0.3-lightgrey.svg)](CHANGELOG.md)
 
 ## Features
 

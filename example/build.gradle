@@ -15,4 +15,6 @@ android {
 
 dependencies {
     implementation project(':lib')
+    implementation 'com.android.support:support-compat:27.1.1'
+    implementation 'com.android.support:support-core-utils:27.1.1'
 }

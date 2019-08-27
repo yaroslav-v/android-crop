@@ -20,12 +20,12 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
 import java.io.Closeable;
@@ -34,6 +34,7 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /*
  * Modified from original in AOSP.
@@ -49,6 +50,34 @@ class CropUtil {
             c.close();
         } catch (Throwable t) {
             // Do nothing
+        }
+    }
+
+    public static int getExifRotation(ContentResolver contentResolver, Uri imageUri) {
+        if (imageUri == null) return 0;
+
+        InputStream inputStream = null;
+        try {
+            inputStream = contentResolver.openInputStream(imageUri);
+            if (inputStream == null) return 0;
+
+            ExifInterface exif = new ExifInterface(inputStream);
+            // We only recognize a subset of orientation tag values
+            switch (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return 90;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return 180;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return 270;
+                default:
+                    return ExifInterface.ORIENTATION_UNDEFINED;
+            }
+        } catch (IOException e) {
+            Log.e("Error getting Exif data", e);
+            return 0;
+        } finally {
+            closeSilently(inputStream);
         }
     }
 
@@ -87,6 +116,37 @@ class CropUtil {
         }
     }
 
+    public static boolean saveExifRotation(File file, int exifRotation) {
+        if (file == null) return false;
+        try {
+            ExifInterface exifDest = new ExifInterface(file.getAbsolutePath());
+            int exifValue;
+            switch (exifRotation) {
+                case 0:
+                    exifValue = ExifInterface.ORIENTATION_NORMAL;
+                    break;
+                case 90:
+                    exifValue = ExifInterface.ORIENTATION_ROTATE_90;
+                    break;
+                case 180:
+                    exifValue = ExifInterface.ORIENTATION_ROTATE_180;
+                    break;
+                case 270:
+                    exifValue = ExifInterface.ORIENTATION_ROTATE_270;
+                    break;
+                default:
+                    exifValue = ExifInterface.ORIENTATION_UNDEFINED;
+                    break;
+            }
+            exifDest.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(exifValue));
+            exifDest.saveAttributes();
+            return true;
+        } catch (IOException e) {
+            Log.e("Error saving Exif rotation data", e);
+            return false;
+        }
+    }
+
     @Nullable
     public static File getFromMediaUri(Context context, ContentResolver resolver, Uri uri) {
         if (uri == null) return null;
@@ -94,7 +154,7 @@ class CropUtil {
         if (SCHEME_FILE.equals(uri.getScheme())) {
             return new File(uri.getPath());
         } else if (SCHEME_CONTENT.equals(uri.getScheme())) {
-            final String[] filePathColumn = { MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME };
+            final String[] filePathColumn = {MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DISPLAY_NAME};
             Cursor cursor = null;
             try {
                 cursor = resolver.query(uri, filePathColumn, null, null, null);
@@ -158,7 +218,7 @@ class CropUtil {
     }
 
     public static void startBackgroundJob(MonitoredActivity activity,
-            String title, String message, Runnable job, Handler handler) {
+                                          String title, String message, Runnable job, Handler handler) {
         // Make the progress dialog uncancelable, so that we can guarantee
         // the thread will be done before the activity getting destroyed
         ProgressDialog dialog = ProgressDialog.show(

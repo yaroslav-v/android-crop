@@ -1,4 +1,4 @@
-## 1.0.4
+## 1.0.5
 
 * Fixed the rotation issue for Samsung devices
 * Extended the example

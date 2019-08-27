@@ -337,8 +337,9 @@ public class CropImageActivity extends MonitoredActivity {
         }
 
         if (croppedImage != null) {
-            imageView.setImageRotateBitmapResetBase(new RotateBitmap(croppedImage, exifRotation), true);
-            imageView.center();
+            // TODO: use exifRotation = 0 if you need to see the cropped preview
+//            imageView.setImageRotateBitmapResetBase(new RotateBitmap(croppedImage, exifRotation), true);
+//            imageView.center();
             imageView.highlightViews.clear();
         }
         saveImage(croppedImage);

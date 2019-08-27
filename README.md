@@ -3,7 +3,7 @@
 An Android library project that provides a simple image cropping `Activity`, based on code from AOSP.
 
 [![](https://jitpack.io/v/yaroslav-v/android-crop.svg)](https://jitpack.io/#yaroslav-v/android-crop)
-[![changelog](https://img.shields.io/badge/changelog-1.0.3-lightgrey.svg)](CHANGELOG.md)
+[![changelog](https://img.shields.io/badge/changelog-1.0.4-lightgrey.svg)](CHANGELOG.md)
 
 ## Features
 
@@ -38,7 +38,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
 }
 ```
     
-Some attributes are provided to customise the crop screen. See the example project [theme](https://github.com/jdamcd/android-crop/blob/master/example/src/main/res/values/theme.xml).
+Some attributes are provided to customise the crop screen. See the example project [theme](https://github.com/yaroslav-v/android-crop/blob/master/example/src/main/res/values/theme.xml).
 
 #### Pick
 
@@ -50,10 +50,16 @@ Crop.pickImage(activity)
 
 #### Dependency
 
-The AAR is published on Maven Central:
+ORIGINAL: The AAR is published on Maven Central:
 
 ```groovy
 compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+```
+
+FIXED: The library is published on JitPack:
+
+```groovy
+implementation 'com.github.yaroslav-v:android-crop:1.0.4'
 ```
 
 #### Users

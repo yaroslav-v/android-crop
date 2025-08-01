@@ -1,3 +1,8 @@
+## 1.0.6
+
+* Upgraded to AndroidX
+* Increased Android API version 
+
 ## 1.0.5
 
 * Fixed the rotation issue for Samsung devices

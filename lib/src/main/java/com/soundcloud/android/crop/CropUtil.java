@@ -20,12 +20,12 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import androidx.exifinterface.media.ExifInterface;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.media.ExifInterface;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.io.Closeable;
